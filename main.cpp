@@ -9,7 +9,6 @@
 #define RT(instruction) (to_string(binaryToDecimal(instruction.substr(11, 5))))
 #define ADDRESS(instruction) (to_string(binaryToDecimal(instruction.substr(6, 31))))
 #define IMMEDIATE(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(15, 31))))
-#define ITABLE(opcode) ()
 
 using namespace std;
 
@@ -19,7 +18,7 @@ string getInstructionType(string opcode);
 int binaryToDecimal(string binary);
 // void decodeRtypeInstruction(string instruction);
 void decodeItypeInstruction(string instruction);
-// void decodeJtypeIntruction(string instruction);
+void decodeJtypeIntruction(string instruction);
  
 int main(int argc, char *argv[])
 {
@@ -38,7 +37,7 @@ int main(int argc, char *argv[])
         decodeItypeInstruction(instruction);
     }
     else {
-        // decodeJtypeIntruction();
+        decodeJtypeIntruction(instruction);
     }
 }
 
@@ -64,15 +63,20 @@ string decimalToHexa( T value){
 
 string getInstructionType(string opcode){
     string intructionType;
-    if(opcode == "8" || "9" || "c" || "4" || "5" || "24" || "25" || 
-    "30"|| "f" || "23"|| "d" || "a" || "b" || "28" || "29" || "2b"){
+    if(opcode == "0"){
+        return "R";
+    }
+    else if (opcode == "2" || "3"){
+        return "J";
+    }
+    else{
         return "I";
     }
     return intructionType;
 }
 
 void decodeItypeInstruction(string instruction){
-    map<string, string> iInstructionTable = {
+    map<string, string> InstructionTable = {
         {"8", "addi",},
         {"9", "addiu",},
         {"c", "andi",},
@@ -92,17 +96,20 @@ void decodeItypeInstruction(string instruction){
         };
 
     cout << "Instruction Type: I" << endl;
-    cout << "Operation: " + iInstructionTable[OPCODE(instruction)]<< endl;
+    cout << "Operation: " + InstructionTable[OPCODE(instruction)]<< endl;
     cout << "Rs: $" + RS(instruction) << endl;
     cout << "Rt: $" + RT(instruction) << endl;
     cout << "Immediate: 0x" + IMMEDIATE(instruction)<< endl;
 }
 
-// void decodeJtypeInstruction(string instruction){
-//     cout << "Instruction Type: I" << endl;
-//     cout << "Operation" << endl;
-//     cout << "Rs: " << endl;
-//     cout << "Rt: " << endl;
-//     cout << "Immediate: 0x" << endl;
-// }
+void decodeJtypeInstruction(string instruction){
+    map<string, string> InstructionTable = {
+        {"2", "j",},
+        {"3", "jal",},
+        };
+
+    cout << "Instruction Type: J" << endl;
+    cout << "Operation: " << endl;
+    cout << "Immediate: 0x" + ADDRESS(instruction) << endl;
+}
 
