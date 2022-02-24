@@ -7,7 +7,7 @@
 #define OPCODE(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(0, 6))))
 #define RS(instruction) (to_string(binaryToDecimal(instruction.substr(6, 5))))
 #define RT(instruction) (to_string(binaryToDecimal(instruction.substr(11, 5))))
-#define ADDRESS(instruction) (to_string(binaryToDecimal(instruction.substr(6, 31))))
+#define ADDRESS(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(6, 31))))
 #define IMMEDIATE(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(15, 31))))
 
 using namespace std;
@@ -18,7 +18,7 @@ string getInstructionType(string opcode);
 int binaryToDecimal(string binary);
 // void decodeRtypeInstruction(string instruction);
 void decodeItypeInstruction(string instruction);
-void decodeJtypeIntruction(string instruction);
+void decodeJtypeInstruction(string instruction);
  
 int main(int argc, char *argv[])
 {
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
         decodeItypeInstruction(instruction);
     }
     else {
-        decodeJtypeIntruction(instruction);
+        decodeJtypeInstruction(instruction);
     }
 }
 
@@ -76,7 +76,7 @@ string getInstructionType(string opcode){
 }
 
 void decodeItypeInstruction(string instruction){
-    map<string, string> InstructionTable = {
+    map<string, string> operationTable = {
         {"8", "addi",},
         {"9", "addiu",},
         {"c", "andi",},
@@ -96,20 +96,20 @@ void decodeItypeInstruction(string instruction){
         };
 
     cout << "Instruction Type: I" << endl;
-    cout << "Operation: " + InstructionTable[OPCODE(instruction)]<< endl;
+    cout << "Operation: " + operationTable[OPCODE(instruction)]<< endl;
     cout << "Rs: $" + RS(instruction) << endl;
     cout << "Rt: $" + RT(instruction) << endl;
     cout << "Immediate: 0x" + IMMEDIATE(instruction)<< endl;
 }
 
 void decodeJtypeInstruction(string instruction){
-    map<string, string> InstructionTable = {
+    map<string, string> operationTable = {
         {"2", "j",},
-        {"3", "jal",},
+        {"3", "jal",}
         };
 
     cout << "Instruction Type: J" << endl;
-    cout << "Operation: " << endl;
+    cout << "Operation: " + operationTable[OPCODE(instruction)]<< endl;
     cout << "Immediate: 0x" + ADDRESS(instruction) << endl;
 }
 
