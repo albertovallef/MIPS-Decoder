@@ -79,13 +79,13 @@ void decodeRtypeInstruction(string instruction){
         {"20", "add",},
         {"21", "addu",},
         {"24", "and",},
-        {"08", "jr",},
+        {"8", "jr",},
         {"27", "nor",},
         {"25", "or",},
         {"2a", "slt",},
         {"2b", "sltu",},
-        {"00", "sll",},
-        {"02", "srl",},
+        {"0", "sll",},
+        {"2", "srl",},
         {"22", "sub",},
         {"23", "subu",}
         };
