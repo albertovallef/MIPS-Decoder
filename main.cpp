@@ -7,8 +7,11 @@
 #define OPCODE(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(0, 6))))
 #define RS(instruction) (to_string(binaryToDecimal(instruction.substr(6, 5))))
 #define RT(instruction) (to_string(binaryToDecimal(instruction.substr(11, 5))))
-#define ADDRESS(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(6, 31))))
-#define IMMEDIATE(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(15, 31))))
+#define RD(instruction) (to_string(binaryToDecimal(instruction.substr(16, 5))))
+#define ADDRESS(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(6, 26))))
+#define IMMEDIATE(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(15, 16))))
+#define FUNCT(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(26, 6))))
+#define SHAMT(instruction) (to_string(binaryToDecimal(instruction.substr(21, 5))))
 
 using namespace std;
 
@@ -16,7 +19,7 @@ template<typename T>
 string decimalToHexa(T value);
 string getInstructionType(string opcode);
 int binaryToDecimal(string binary);
-// void decodeRtypeInstruction(string instruction);
+void decodeRtypeInstruction(string instruction);
 void decodeItypeInstruction(string instruction);
 void decodeJtypeInstruction(string instruction);
  
@@ -27,11 +30,8 @@ int main(int argc, char *argv[])
 
     string instructionType;
     instructionType = getInstructionType(OPCODE(instruction));
-
     if(instructionType == "R"){
-        // Need to implement funct 
-        // Decode based on the funct 
-        // decodeRtypeInstruction();
+        decodeRtypeInstruction(instruction);
     }
     else if(instructionType == "I"){
         decodeItypeInstruction(instruction);
@@ -62,17 +62,41 @@ string decimalToHexa( T value){
 }
 
 string getInstructionType(string opcode){
-    string intructionType;
     if(opcode == "0"){
         return "R";
     }
-    else if (opcode == "2" || "3"){
+    else if (opcode == "2" || opcode == "3"){
+        cout << "Here" << endl;
         return "J";
     }
     else{
         return "I";
     }
-    return intructionType;
+}
+
+void decodeRtypeInstruction(string instruction){
+    map<string, string> operationTable = {
+        {"20", "add",},
+        {"21", "addu",},
+        {"24", "and",},
+        {"08", "jr",},
+        {"27", "nor",},
+        {"25", "or",},
+        {"2a", "slt",},
+        {"2b", "sltu",},
+        {"00", "sll",},
+        {"02", "srl",},
+        {"22", "sub",},
+        {"23", "subu",}
+        };
+
+    cout << "Instruction Type: R" << endl;
+    cout << "Operation: " + operationTable[FUNCT(instruction)]<< endl;
+    cout << "Rs: $" + RS(instruction) << endl;
+    cout << "Rt: $" + RT(instruction) << endl;
+    cout << "Rd: $" + RD(instruction) << endl;
+    cout << "Shamt: " + SHAMT(instruction) << endl;
+    cout << "Funct: 0x" + FUNCT(instruction)<< endl;
 }
 
 void decodeItypeInstruction(string instruction){
