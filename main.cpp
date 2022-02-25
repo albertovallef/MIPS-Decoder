@@ -9,7 +9,7 @@
 #define RT(instruction) (to_string(binaryToDecimal(instruction.substr(11, 5))))
 #define RD(instruction) (to_string(binaryToDecimal(instruction.substr(16, 5))))
 #define ADDRESS(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(6, 26))))
-#define IMMEDIATE(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(15, 16))))
+#define IMMEDIATE(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(16, 16))))
 #define FUNCT(instruction) (decimalToHexa(binaryToDecimal(instruction.substr(26, 6))))
 #define SHAMT(instruction) (to_string(binaryToDecimal(instruction.substr(21, 5))))
 
@@ -66,7 +66,6 @@ string getInstructionType(string opcode){
         return "R";
     }
     else if (opcode == "2" || opcode == "3"){
-        cout << "Here" << endl;
         return "J";
     }
     else{
