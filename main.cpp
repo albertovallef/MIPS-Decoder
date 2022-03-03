@@ -75,7 +75,7 @@ string getInstructionType(string opcode){
 
 void decodeRtypeInstruction(string instruction){
     map<string, string> operationTable = {
-        {"20", "add",},
+        {"20", "add",}, 
         {"21", "addu",},
         {"24", "and",},
         {"8", "jr",},
